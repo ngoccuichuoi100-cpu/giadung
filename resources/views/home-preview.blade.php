@@ -1,0 +1,824 @@
+@extends('layouts.client')
+
+@section('title', 'GiaDụngPro - Trang Chủ Thiết Bị Gia Dụng')
+
+@section('content')
+    <!-- =================================================================== -->
+    <!-- HERO BANNER [V2 MỚI]: PARALLAX 3D + ĐẨY TÁCH KHÔNG GIAN + BỎ GIÁ    -->
+    <!-- =================================================================== -->
+    <div id="hero-parallax-stage" class="relative w-full h-[580px] sm:h-[620px] lg:h-[640px] rounded-none overflow-hidden select-none" onmousemove="handleParallax(event)">
+        
+        <!-- 1. Bức ảnh nền bếp chuyển động Parallax theo chuột (nguyên bản, không có lớp phủ màu) -->
+        <div id="p2-bg" class="absolute inset-0 w-full h-full transform scale-105 transition-transform duration-200 ease-out">
+            <img src="{{ asset('images/kitchen-banner.png') }}" alt="Không gian bếp hiện đại" class="w-full h-full object-cover object-[center_40%] block select-none pointer-events-none">
+        </div>
+
+        <!-- 2. KHỐI NỘI DUNG LIỀN MẠCH: LƯỚI 12 CỘT CÂN ĐỐI, LẤP ĐẦY KHOẢNG GIỮA -->
+        <div class="absolute inset-0 flex items-center z-20 pointer-events-none pt-10 sm:pt-12 pb-4">
+            <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+                
+                <!-- Cột trái: 5 cột (Nội dung chữ và nút CTA) -->
+                <div id="p2-text" class="lg:col-span-5 space-y-3.5 text-left pointer-events-auto transition-transform duration-300">
+                    
+
+                    <h1 id="banner-title" class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight leading-tight">
+                        <span class="text-white block drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">Nâng Tầm Không Gian</span>
+                        <span class="text-[#B2D5E5] block drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">Căn Bếp Hiện Đại</span>
+                    </h1>
+                    
+                    <p id="banner-desc" class="text-xs sm:text-sm text-white/90 leading-relaxed font-normal max-w-md drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">
+                        Khám phá bộ sưu tập đồ gia dụng cao cấp chính hãng. Thiết kế sang trọng, tích hợp công nghệ thông minh hỗ trợ nấu nướng nhanh chóng và tiện lợi.
+                    </p>
+
+                    <!-- Nút CTA -->
+                    <div id="banner-cta" class="flex flex-wrap items-center gap-3 pt-1">
+                        <a href="{{ route('products.index') }}" class="px-5 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-xs sm:text-sm font-bold rounded-xl shadow-lg hover:shadow-orange-500/25 transition-all duration-300 hover:-translate-y-0.5 flex items-center gap-2">
+                            <span>Khám Phá Ngay</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                        <a href="{{ route('games.index') }}" class="px-4 py-2.5 bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/30 text-white text-xs sm:text-sm font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] rounded-xl transition-all duration-300 hover:-translate-y-0.5">
+                            Giải Thưởng & Games
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- Cột phải: 7 cột (HIỆU ỨNG FOCUS: PHÓNG TO THẺ ĐƯỢC CHỌN & ĐẨY 2 THẺ KIA RA NHẸ) -->
+                <div class="lg:col-span-7 flex justify-center lg:justify-center pointer-events-none" id="p2-floating-grid">
+                    
+                    <div class="grid grid-cols-2 gap-4 sm:gap-6 pointer-events-auto w-full max-w-md" id="products-interactive-container">
+                        
+                        <!-- Vật thể nổi 1: Nồi chiên hấp Tefal -->
+                        <a href="{{ route('products.show', 'noi-chien-khong-dau-tefal-ultimate-fw5018') }}" id="item-tefal" class="product-push-card relative cursor-pointer text-center"
+                             onmouseenter="hoverProduct('tefal')" onmouseleave="hoverProduct(null)"
+                             title="Nồi chiên không dầu kết hợp hấp Tefal FW5018">
+                            <div class="animate-float-slow">
+                                <!-- Giữ nguyên bóng đổ mặc định, đã xóa phần bóng màu khi hover -->
+                                <img src="{{ asset('storage/products/thumbnails/tefal_fw5018.png') }}" alt="Nồi chiên hấp Tefal FW5018" class="w-36 sm:w-44 lg:w-48 h-auto object-contain mx-auto rounded-2xl drop-shadow-[0_15px_25px_rgba(0,0,0,0.8)] transition-all">
+                                <!-- Bóng đổ 3D dưới đáy giữ nguyên mặc định -->
+                                <div class="w-24 sm:w-28 lg:w-32 h-3 bg-black/50 rounded-full blur-md mx-auto mt-2 transform scale-75 transition-all"></div>
+                            </div>
+                        </a>
+
+                        <!-- Vật thể nổi 2: Máy xay Philips -->
+                        <a href="{{ route('products.show', 'may-xay-sinh-to-philips-hr2221') }}" id="item-philips" class="product-push-card relative cursor-pointer text-center pt-2 sm:pt-4"
+                             onmouseenter="hoverProduct('philips')" onmouseleave="hoverProduct(null)"
+                             title="Máy xay sinh tố Philips HR2221">
+                            <div class="animate-float-delayed">
+                                <!-- Giữ nguyên bóng đổ mặc định, đã xóa phần bóng màu khi hover -->
+                                <img src="{{ asset('storage/products/thumbnails/philips_hr2221.png') }}" alt="Máy xay sinh tố Philips HR2221" class="w-30 sm:w-36 lg:w-40 h-auto object-contain mx-auto rounded-2xl drop-shadow-[0_15px_25px_rgba(0,0,0,0.8)] transition-all">
+                                <!-- Bóng đổ 3D dưới đáy giữ nguyên mặc định -->
+                                <div class="w-20 sm:w-24 lg:w-28 h-2.5 bg-black/50 rounded-full blur-md mx-auto mt-2 transform scale-75 transition-all"></div>
+                            </div>
+                        </a>
+
+                        <!-- Vật thể nổi 3: Nồi lẩu đa năng Sunhouse -->
+                        <a href="{{ route('products.show', 'noi-lau-dien-sunhouse-shd4527') }}" id="item-sunhouse" class="product-push-card relative cursor-pointer text-center col-span-2 flex flex-col items-center mt-1 sm:mt-2"
+                             onmouseenter="hoverProduct('sunhouse')" onmouseleave="hoverProduct(null)"
+                             title="Nồi lẩu đa năng Sunhouse SHD4527">
+                            <div class="animate-float-fast">
+                                <!-- Giữ nguyên bóng đổ mặc định, đã xóa phần bóng màu khi hover -->
+                                <img src="{{ asset('storage/products/thumbnails/sunhouse_shd4527.png') }}" alt="Nồi lẩu đa năng Sunhouse SHD4527" class="w-44 sm:w-52 lg:w-56 h-auto object-contain mx-auto rounded-2xl drop-shadow-[0_15px_25px_rgba(0,0,0,0.8)] transition-all">
+                                <!-- Bóng đổ 3D dưới đáy giữ nguyên mặc định -->
+                                <div class="w-28 sm:w-36 lg:w-40 h-3 bg-black/50 rounded-full blur-md mx-auto mt-2 transform scale-75 transition-all"></div>
+                            </div>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- KHỐI THÀNH TỰU (ACHIEVEMENTS / STATS) - NẰM TỰ NHIÊN DƯỚI BANNER      -->
+    <!-- =================================================================== -->
+    <section id="stats-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-8 relative z-20 transition-all">
+        <!-- Lưới 3 thẻ thành tựu hiện đại -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal-group" id="stats-grid">
+            
+            <!-- Thẻ Thành Tựu 1: Sản phẩm -->
+            <div class="stat-card reveal-item bg-gradient-to-r from-[#B2D5E5] via-[#cce7f5] to-[#B2D5E5] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 border-2 border-white/90 dark:border-cyan-400/30 rounded-3xl p-5 sm:p-6 shadow-xl dark:shadow-[0_10px_35px_rgba(178,213,229,0.25)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 flex items-center gap-4.5 group">
+                <div class="p-3.5 bg-white/95 dark:bg-cyan-500/20 text-slate-800 dark:text-cyan-300 rounded-2xl shadow-md border border-white dark:border-cyan-400/40 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                    <svg class="w-7 h-7 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                </div>
+                <div class="text-left">
+                    <p class="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider">Tổng Sản Phẩm</p>
+                    <p class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-0.5">{{ number_format($publicStats['products_count'] ?? 0) }}+</p>
+                    <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">100% Chính hãng nhập khẩu</p>
+                </div>
+            </div>
+
+            <!-- Thẻ Thành Tựu 2: Đối tác thương hiệu -->
+            <div class="stat-card reveal-item bg-gradient-to-r from-[#B2D5E5] via-[#cce7f5] to-[#B2D5E5] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 border-2 border-white/90 dark:border-cyan-400/30 rounded-3xl p-5 sm:p-6 shadow-xl dark:shadow-[0_10px_35px_rgba(178,213,229,0.25)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 flex items-center gap-4.5 group">
+                <div class="p-3.5 bg-white/95 dark:bg-cyan-500/20 text-slate-800 dark:text-cyan-300 rounded-2xl shadow-md border border-white dark:border-cyan-400/40 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                    <svg class="w-7 h-7 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                </div>
+                <div class="text-left">
+                    <p class="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider">Hãng Hợp Tác</p>
+                    <p class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-0.5">{{ number_format($publicStats['brands_count'] ?? 0) }}+ Hãng Lớn</p>
+                    <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">Philips, Tefal, Sunhouse, v.v.</p>
+                </div>
+            </div>
+
+            <!-- Thẻ Thành Tựu 3: Sự hài lòng khách hàng -->
+            <div class="stat-card reveal-item bg-gradient-to-r from-[#B2D5E5] via-[#cce7f5] to-[#B2D5E5] dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 border-2 border-white/90 dark:border-cyan-400/30 rounded-3xl p-5 sm:p-6 shadow-xl dark:shadow-[0_10px_35px_rgba(178,213,229,0.25)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 flex items-center gap-4.5 group">
+                <div class="p-3.5 bg-white/95 dark:bg-cyan-500/20 text-slate-800 dark:text-cyan-300 rounded-2xl shadow-md border border-white dark:border-cyan-400/40 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                    <svg class="w-7 h-7 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <div class="text-left">
+                    <p class="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider">Đơn Hàng Phục Vụ</p>
+                    <p class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-0.5">{{ number_format($publicStats['orders_served'] ?? 0) }}+</p>
+                    <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">Hơn 50,000+ gia đình tin dùng</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Brands Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center max-w-xl mx-auto mb-10 reveal-single">
+            <span class="px-3.5 py-1.5 bg-orange-500/10 text-orange-500 dark:bg-cyan-500/15 dark:text-cyan-300 border border-orange-500/20 dark:border-cyan-500/30 rounded-full text-[11px] font-bold uppercase tracking-widest inline-block mb-3">
+                ✦ THƯƠNG HIỆU HÀNG ĐẦU ✦
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-black uppercase tracking-tight text-slate-900 dark:bg-gradient-to-r dark:from-white dark:via-cyan-100 dark:to-candy-blue dark:bg-clip-text dark:text-transparent">
+                Hãng Sản Phẩm
+            </h2>
+            <p class="text-slate-500 dark:text-slate-400 text-sm font-medium mt-2">Lựa chọn các thương hiệu uy tín chất lượng hàng đầu</p>
+        </div>
+
+        <div class="reveal-single">
+            <x-brand-coverflow-gallery :brands="$brands" />
+        </div>
+    </section>
+
+    <!-- Search-based Recommendations for Returning / Active Searchers -->
+    @if(isset($searchRecommendation) && $searchRecommendation['has_history'] && $searchRecommendation['products']->isNotEmpty())
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="reveal-single bg-gradient-to-r from-orange-500/10 via-amber-500/5 to-transparent dark:from-orange-950/20 dark:via-slate-850 dark:to-slate-900 border border-orange-200/70 dark:border-orange-500/20 rounded-3xl p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="px-3 py-1 bg-orange-500 text-white rounded-full text-xs font-extrabold uppercase tracking-wider shadow-sm flex items-center gap-1.5">
+                            <span>✨</span> Gợi ý riêng cho bạn
+                        </span>
+                        <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                            Dựa trên tìm kiếm gần đây:
+                            @foreach(array_slice($searchRecommendation['keywords'], 0, 3) as $kw)
+                                <span class="text-orange-600 dark:text-orange-400 font-bold">"{{ $kw }}"</span>{{ !$loop->last ? ',' : '' }}
+                            @endforeach
+                        </span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">Có Thể Bạn Đang Tìm Kiếm</h2>
+                </div>
+                <a href="{{ route('products.index') }}" class="text-xs font-bold text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 flex items-center gap-1 group">
+                    <span>Xem tất cả sản phẩm</span>
+                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 reveal-group">
+                @foreach($searchRecommendation['products'] as $prod)
+                    <div class="reveal-item h-full flex flex-col">
+                        @include('partials.product-card', ['product' => $prod])
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
+
+    <!-- Popular Products Section -->
+    <section class="bg-slate-100 dark:bg-slate-800/40 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-10 reveal-single">
+                <div>
+                    <span class="text-orange-600 dark:text-orange-400 font-bold tracking-widest text-xs uppercase bg-orange-100 dark:bg-orange-950/40 px-2.5 py-1 rounded-md">Yêu Thích Nhất</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2">Sản Phẩm Được Ưa Chuộng Nhất</h2>
+                    <p class="text-slate-500 dark:text-slate-400 mt-1">Đánh giá cao dựa trên số bán, lượt xem và bình chọn khách hàng</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 reveal-group">
+                @forelse($popularProducts as $product)
+                    <div class="reveal-item h-full flex flex-col">
+                        @include('partials.product-card', ['product' => $product])
+                    </div>
+                @empty
+                    <div class="col-span-full py-8 text-center text-slate-400">Chưa có sản phẩm.</div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Sales Rankings & Ratings distributions -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 reveal-group">
+        
+        <!-- Brand Sales Rankings -->
+        <div class="reveal-item bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-md">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Bảng Xếp Hạng Hãng</h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Xếp hạng hãng theo sản phẩm bán ra từ đơn hàng hoàn thành</p>
+                </div>
+                <!-- Time Range Filter Form -->
+                <form action="{{ url()->current() }}" method="GET" class="flex gap-1.5">
+                    <select name="brand_range" onchange="this.form.submit()" class="bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl px-2.5 py-1 text-xs text-slate-700 dark:text-slate-200 focus:outline-none">
+                        <option value="all" {{ request('brand_range') == 'all' ? 'selected' : '' }}>Toàn bộ</option>
+                        <option value="week" {{ request('brand_range') == 'week' ? 'selected' : '' }}>Tuần qua</option>
+                        <option value="month" {{ request('brand_range') == 'month' ? 'selected' : '' }}>Tháng qua</option>
+                        <option value="year" {{ request('brand_range') == 'year' ? 'selected' : '' }}>Năm qua</option>
+                    </select>
+                </form>
+            </div>
+
+            <div class="space-y-4">
+                @forelse($brandRankings as $index => $brandRank)
+                    <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-900/40 hover:bg-orange-50/20 dark:hover:bg-slate-700/30 rounded-2xl transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 text-center font-bold text-sm text-slate-400 {{ $index == 0 ? 'text-amber-500 text-lg' : ($index == 1 ? 'text-slate-500' : ($index == 2 ? 'text-orange-500' : '')) }}">
+                                {{ $index + 1 }}
+                            </span>
+                            <div class="w-10 h-10 rounded-xl bg-white dark:bg-white flex items-center justify-center shadow-sm border border-slate-100 dark:border-slate-200 overflow-hidden p-1">
+                                @if($brandRank->logo)
+                                    <img src="{{ $brandRank->logo_url }}" 
+                                         alt="{{ $brandRank->name }}" 
+                                         class="w-full h-full object-contain"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                                    <span class="text-orange-500 font-extrabold text-sm" style="display: none;">{{ substr($brandRank->name, 0, 1) }}</span>
+                                @else
+                                    <span class="text-orange-500 font-extrabold text-sm">{{ substr($brandRank->name, 0, 1) }}</span>
+                                @endif
+                            </div>
+                            <div class="text-left">
+                                <span class="font-bold text-slate-800 dark:text-slate-200 text-sm block">{{ $brandRank->name }}</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs font-bold text-orange-500 bg-orange-50 dark:bg-orange-950/40 px-2.5 py-1 rounded-full">{{ number_format($brandRank->sold_count ?? 0) }} đã bán</span>
+                        </div>
+                    </div>
+                @empty
+                    <div class="py-12 text-center text-slate-400 text-xs">Chưa có dữ liệu bán hàng cho khoảng thời gian này.</div>
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Global Ratings Statistics -->
+        <div class="reveal-item bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-md flex flex-col justify-between">
+            <div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Thống Kê Đánh Giá</h3>
+                
+                <div class="flex items-center gap-6 mb-6">
+                    <div class="text-center">
+                        <span class="text-5xl font-extrabold text-orange-500">{{ number_format($avgRating ?? 0, 1) }}</span>
+                        <div class="flex justify-center text-amber-400 mt-1">
+                            @for($i = 1; $i <= 5; $i++)
+                                <svg class="w-4 h-4 {{ $i <= round($avgRating ?? 0) ? 'fill-current' : 'text-slate-300 dark:text-slate-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.907c.961 0 1.36 1.252.586 1.813l-3.97 2.87a1 1 0 00-.364 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.971-2.87a1 1 0 00-1.175 0l-3.97 2.87c-.784.57-1.838-.197-1.539-1.118l1.518-4.674a1 1 0 00-.364-1.118l-3.97-2.87c-.77-.56-.375-1.813.587-1.813h4.906a1 1 0 00.95-.69l1.519-4.674z"></path></svg>
+                            @endfor
+                        </div>
+                        <span class="text-xs text-slate-400 mt-1.5 block">({{ $totalReviews }} lượt đánh giá)</span>
+                    </div>
+
+                    <!-- Progress bars -->
+                    <div class="flex-grow space-y-2">
+                        @foreach($ratingDistribution as $star => $count)
+                            @php
+                                $percent = $totalReviews > 0 ? ($count / $totalReviews) * 100 : 0;
+                            @endphp
+                            <div class="flex items-center text-xs gap-3">
+                                <span class="w-3 text-right font-semibold">{{ $star }}⭐</span>
+                                <div class="flex-grow bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                                    <div class="bg-orange-500 h-full rounded-full transition-all" style="width: {{ $percent }}%"></div>
+                                </div>
+                                <span class="w-8 text-right text-slate-400">{{ $count }}</span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured reviews carousel/list -->
+            <div class="border-t border-slate-100 dark:border-slate-700 pt-6">
+                <span class="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">Đánh giá nổi bật</span>
+                <div class="space-y-4">
+                    @forelse($featuredReviews as $review)
+                        <div class="p-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-xs">{{ $review->user ? $review->user->name : 'Ẩn danh' }}</span>
+                                <span class="text-amber-400 text-[10px]">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        {{ $i <= $review->rating ? '★' : '☆' }}
+                                    @endfor
+                                </span>
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-400 text-[11px] line-clamp-2 text-left italic">"{{ $review->comment }}"</p>
+                            <span class="text-[9px] text-slate-400 text-left block mt-1">Sản phẩm: {{ $review->product ? $review->product->name : '' }}</span>
+                        </div>
+                    @empty
+                        <div class="text-center text-slate-400 text-xs py-4">Chưa có đánh giá nổi bật.</div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="text-center max-w-xl mx-auto mb-10 reveal-single">
+            <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Danh Mục Sản Phẩm</h2>
+            <p class="text-slate-500 mt-2">Tìm kiếm nhanh chóng thiết bị phù hợp theo từng nhu cầu</p>
+        </div>
+
+        @php
+            $groupMappings = [
+                // Thiết bị nhà bếp
+                'noi-com-dien' => 'kitchen',
+                'noi-chien-noi-nuong' => 'kitchen',
+                'may-ep-trai-cay' => 'kitchen',
+                'bep-tu-hong-ngoai' => 'kitchen',
+                'may-xay-sinh-to' => 'kitchen',
+                'lo-vi-song' => 'kitchen',
+                'may-lam-sua-hat' => 'kitchen',
+                'noi-chao' => 'kitchen',
+                'lo-nuong' => 'kitchen',
+                'may-xay-thit' => 'kitchen',
+                'may-vat-cam' => 'kitchen',
+                'noi-nau-cham' => 'kitchen',
+                'noi-ap-suat-hap' => 'kitchen',
+                'binh-thuy-dien' => 'kitchen',
+                'may-pha-ca-phe' => 'kitchen',
+                'may-danh-trung' => 'kitchen',
+                'do-dung-nha-bep' => 'kitchen',
+                'may-lam-toi-den' => 'kitchen',
+                'may-say-trai-cay' => 'kitchen',
+                'noi-lau-dien' => 'kitchen',
+
+                // Hệ thống lọc & Nước
+                'may-loc-nuoc' => 'water',
+                'may-loc-khong-khi' => 'water',
+                'may-nuoc-nong' => 'water',
+                'may-nong-lanh' => 'water',
+                'binh-loc-nuoc' => 'water',
+                'binh-ly-giu-nhiet' => 'water',
+                'may-bom-nuoc' => 'water',
+
+                // Làm mát & Điện gia dụng
+                'quat' => 'cooling',
+                'may-lam-mat-quat-dieu-hoa' => 'cooling',
+                'am-ca-binh-dun' => 'cooling',
+                'bep-ga-duong-am' => 'cooling',
+                'may-hut-mui-hut-khoi' => 'cooling',
+                'den-nang-luong-mat-troi' => 'cooling',
+                'ban-ui' => 'cooling',
+                'do-dung-gia-dinh' => 'cooling',
+                'thiet-bi-chieu-sang' => 'cooling',
+                'o-cam-dien' => 'cooling',
+                'can-suc-khoe' => 'cooling',
+                'on-ap' => 'cooling',
+                'khoa-dien-tu' => 'cooling',
+                'dung-cu-gia-dinh' => 'cooling',
+                'thiet-bi-suoi-am' => 'cooling',
+                'am-sieu-toc' => 'cooling',
+
+                // Dọn dẹp & Chăm sóc sức khỏe
+                'may-hut-bui-robot-hut-bui' => 'cleaning',
+                'may-rua-chen-say-chen' => 'cleaning',
+                'may-do-huyet-ap' => 'cleaning',
+                'say-toc' => 'cleaning',
+                'may-cao-rau' => 'cleaning',
+                'ghe-massage' => 'cleaning',
+                'may-xit-rua' => 'cleaning',
+                'thiet-bi-ve-sinh' => 'cleaning',
+            ];
+
+            $getGroup = function($category) use ($groupMappings) {
+                if (isset($groupMappings[$category->slug])) {
+                    return $groupMappings[$category->slug];
+                }
+                $name = mb_strtolower($category->name, 'UTF-8');
+                if (str_contains($name, 'lọc') || str_contains($name, 'nước') || str_contains($name, 'bình') || str_contains($name, 'ly')) {
+                    return 'water';
+                }
+                if (str_contains($name, 'nồi') || str_contains($name, 'chảo') || str_contains($name, 'bếp') || str_contains($name, 'nướng') || str_contains($name, 'lò') || str_contains($name, 'xay') || str_contains($name, 'ép') || str_contains($name, 'pha') || str_contains($name, 'đánh trứng') || str_contains($name, 'sữa') || str_contains($name, 'tỏi') || str_contains($name, 'cam') || str_contains($name, 'bếp')) {
+                    return 'kitchen';
+                }
+                if (str_contains($name, 'quạt') || str_contains($name, 'làm mát') || str_contains($name, 'ổ cắm') || str_contains($name, 'đèn') || str_contains($name, 'chiếu sáng') || str_contains($name, 'bàn ủi') || str_contains($name, 'khóa') || str_contains($name, 'ổn áp') || str_contains($name, 'sưởi')) {
+                    return 'cooling';
+                }
+                if (str_contains($name, 'hút bụi') || str_contains($name, 'rửa chén') || str_contains($name, 'vệ sinh') || str_contains($name, 'massage') || str_contains($name, 'sấy tóc') || str_contains($name, 'huyết áp') || str_contains($name, 'cạo râu') || str_contains($name, 'xịt rửa')) {
+                    return 'cleaning';
+                }
+                return 'kitchen';
+            };
+
+        @endphp
+
+        <!-- Navigation Tabs -->
+        <div class="flex justify-center border-b border-slate-200 dark:border-slate-800 mb-8 overflow-x-auto whitespace-nowrap scrollbar-none gap-2 sm:gap-6 reveal-single">
+            <button class="category-tab-btn px-4 py-2 text-sm sm:text-base font-bold text-slate-800 dark:text-slate-200 border-b-2 border-orange-500 pb-3" data-group="kitchen">Thiết Bị Bếp</button>
+            <button class="category-tab-btn px-4 py-2 text-sm sm:text-base font-medium text-slate-500 dark:text-slate-400 border-b-2 border-transparent pb-3 hover:text-slate-800 dark:hover:text-slate-200" data-group="water">Lọc Nước & Khí</button>
+            <button class="category-tab-btn px-4 py-2 text-sm sm:text-base font-medium text-slate-500 dark:text-slate-400 border-b-2 border-transparent pb-3 hover:text-slate-800 dark:hover:text-slate-200" data-group="cooling">Làm Mát & Gia Dụng</button>
+            <button class="category-tab-btn px-4 py-2 text-sm sm:text-base font-medium text-slate-500 dark:text-slate-400 border-b-2 border-transparent pb-3 hover:text-slate-800 dark:hover:text-slate-200" data-group="cleaning">Dọn Dẹp & Sức Khỏe</button>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 reveal-group" id="categories-grid">
+            @foreach($categories as $index => $category)
+                @php
+                    $group = $getGroup($category);
+                @endphp
+                <a href="{{ route('products.index', ['category' => $category->slug]) }}" 
+                   class="category-card reveal-item group relative h-36 rounded-3xl p-5 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl flex flex-col justify-between bg-[#B2D5E5] dark:bg-[#B2D5E5] border border-white/80 dark:border-white/50 shadow-md select-none"
+                   data-group="{{ $group }}">
+                    
+                    <!-- Category Title -->
+                    <h3 class="font-black text-slate-900 text-sm sm:text-base leading-tight tracking-tight text-left z-10 max-w-[70%] group-hover:text-black transition-colors">
+                        {{ $category->name }}
+                    </h3>
+
+                    <!-- Category Icon Badge -->
+                    <div class="absolute bottom-3.5 right-3.5 w-14 h-14 rounded-2xl bg-white/85 dark:bg-white/90 shadow-sm border border-white flex items-center justify-center text-slate-800 group-hover:scale-110 group-hover:rotate-3 group-hover:bg-white group-hover:text-[#0284c7] group-hover:shadow-md transition-all duration-300 pointer-events-none">
+                        <x-category-icon :slug="$category->slug" :name="$category->name" class="w-7 h-7" />
+                    </div>
+                </a>
+            @endforeach
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const tabBtns = document.querySelectorAll('.category-tab-btn');
+                const cards = document.querySelectorAll('.category-card');
+
+                function filterCategories(group) {
+                    cards.forEach(card => {
+                        if (card.getAttribute('data-group') === group) {
+                            card.style.display = 'flex';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'scale(1)';
+                                card.style.pointerEvents = 'auto';
+                            }, 50);
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.95)';
+                            card.style.pointerEvents = 'none';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                }
+
+                tabBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        tabBtns.forEach(b => {
+                            b.classList.remove('active', 'font-bold', 'text-slate-800', 'dark:text-slate-200', 'border-orange-500');
+                            b.classList.add('font-medium', 'text-slate-500', 'dark:text-slate-400', 'border-transparent');
+                        });
+                        this.classList.add('active', 'font-bold', 'text-slate-800', 'dark:text-slate-200', 'border-orange-500');
+                        this.classList.remove('font-medium', 'text-slate-500', 'dark:text-slate-400', 'border-transparent');
+
+                        const selectedGroup = this.getAttribute('data-group');
+                        filterCategories(selectedGroup);
+                    });
+                });
+
+                // Initialize display with active group (kitchen)
+                filterCategories('kitchen');
+            });
+        </script>
+        
+        <style>
+            .category-card {
+                transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            }
+        </style>
+    </section>
+
+    <!-- New Products Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="flex justify-between items-end mb-10 reveal-single">
+            <div>
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Sản Phẩm Mới Nhất</h2>
+                <p class="text-slate-500 mt-1">Cập nhật xu hướng thiết bị gia dụng mới nhất</p>
+            </div>
+            <a href="{{ route('products.index', ['sort' => 'latest']) }}" class="text-orange-500 hover:text-orange-600 font-semibold text-sm flex items-center gap-1">
+                Xem tất cả
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 reveal-group">
+            @foreach($newProducts as $product)
+                <div class="reveal-item h-full flex flex-col">
+                    @include('partials.product-card', ['product' => $product])
+                </div>
+            @endforeach
+        </div>
+    </section>
+
+    <!-- Sale Products Section -->
+    <section class="bg-gradient-to-br from-orange-50 to-amber-50 dark:from-slate-800 dark:to-slate-900 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-10 reveal-single">
+                <div>
+                    <span class="text-orange-600 dark:text-orange-400 font-bold tracking-widest text-xs uppercase bg-orange-100 dark:bg-orange-950/40 px-2.5 py-1 rounded-md">Khuyến Mãi Khủng</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-2">Sản Phẩm Đang Giảm Giá</h2>
+                    <p class="text-slate-500 dark:text-slate-400 mt-1">Nhanh tay sở hữu sản phẩm tốt với mức giá rẻ bất ngờ</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 reveal-group">
+                @foreach($saleProducts as $product)
+                    <div class="reveal-item h-full flex flex-col">
+                        @include('partials.product-card', ['product' => $product])
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Parallax 3D & Focus Push Interaction Script -->
+    <script>
+        // 1. Quản lý tương tác đẩy 2 thẻ còn lại khi lia chuột vào 1 thẻ
+        function hoverProduct(activeId) {
+            const tefal = document.getElementById('item-tefal');
+            const philips = document.getElementById('item-philips');
+            const sunhouse = document.getElementById('item-sunhouse');
+            if (!tefal || !philips || !sunhouse) return;
+
+            if (activeId === 'tefal') {
+                // Tefal được chọn: Phóng to nhẹ và đưa lên trên cùng
+                tefal.style.transform = 'scale(1.18) translate(-6px, -4px)';
+                tefal.style.zIndex = '35';
+                tefal.style.opacity = '1';
+                
+                // Philips và Sunhouse bị đẩy nhẹ ra xa và làm dịu nhẹ
+                philips.style.transform = 'scale(0.92) translate(18px, -2px)';
+                philips.style.zIndex = '10';
+                philips.style.opacity = '0.75';
+                
+                sunhouse.style.transform = 'scale(0.92) translate(0px, 18px)';
+                sunhouse.style.zIndex = '10';
+                sunhouse.style.opacity = '0.75';
+            } else if (activeId === 'philips') {
+                // Philips được chọn: Phóng to nhẹ và đưa lên trên cùng
+                philips.style.transform = 'scale(1.18) translate(6px, -4px)';
+                philips.style.zIndex = '35';
+                philips.style.opacity = '1';
+                
+                // Tefal và Sunhouse bị đẩy nhẹ ra xa
+                tefal.style.transform = 'scale(0.92) translate(-18px, -2px)';
+                tefal.style.zIndex = '10';
+                tefal.style.opacity = '0.75';
+                
+                sunhouse.style.transform = 'scale(0.92) translate(0px, 18px)';
+                sunhouse.style.zIndex = '10';
+                sunhouse.style.opacity = '0.75';
+            } else if (activeId === 'sunhouse') {
+                // Sunhouse được chọn: Phóng to nhẹ và đưa lên trên cùng
+                sunhouse.style.transform = 'scale(1.16) translate(0px, 6px)';
+                sunhouse.style.zIndex = '35';
+                sunhouse.style.opacity = '1';
+                
+                // Tefal và Philips bị đẩy nhẹ lên trên và sang hai bên
+                tefal.style.transform = 'scale(0.92) translate(-14px, -16px)';
+                tefal.style.zIndex = '10';
+                tefal.style.opacity = '0.75';
+                
+                philips.style.transform = 'scale(0.92) translate(14px, -16px)';
+                philips.style.zIndex = '10';
+                philips.style.opacity = '0.75';
+            } else {
+                // Rê chuột ra ngoài: Phục hồi lại vị trí và tỷ lệ mặc định êm ái
+                tefal.style.transform = 'scale(1) translate(0px, 0px)';
+                tefal.style.zIndex = '20';
+                tefal.style.opacity = '1';
+                
+                philips.style.transform = 'scale(1) translate(0px, 0px)';
+                philips.style.zIndex = '20';
+                philips.style.opacity = '1';
+                
+                sunhouse.style.transform = 'scale(1) translate(0px, 0px)';
+                sunhouse.style.zIndex = '20';
+                sunhouse.style.opacity = '1';
+            }
+        }
+
+        // 2. Parallax 3D tracking cho nền và cụm sản phẩm
+        function handleParallax(e) {
+            const container = document.getElementById('hero-parallax-stage');
+            if (!container) return;
+            const rect = container.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+            const bg = document.getElementById('p2-bg');
+            const text = document.getElementById('p2-text');
+            const grid = document.getElementById('p2-floating-grid');
+
+            if (bg) bg.style.transform = `scale(1.05) translate(${-x * 16}px, ${-y * 12}px)`;
+            if (text) text.style.transform = `translate(${x * 12}px, ${y * 8}px)`;
+            if (grid) grid.style.transform = `translate(${x * 18}px, ${y * 12}px)`;
+        }
+    </script>
+
+    <!-- =================================================================== -->
+    <!-- CHUYÊN GIA UX/UI: HIỆU ỨNG CUỘN TRANG TRANG TRỌNG & MƯỢT MÀ         -->
+    <!-- (LUXURY SCROLL REVEAL & STAGGERED CASCADING EFFECT)                 -->
+    <!-- =================================================================== -->
+    <style>
+        /* 1. Trạng thái ban đầu: Ẩn nhẹ, hạ thấp và thu nhỏ vi mô */
+        .reveal-item,
+        .reveal-single {
+            opacity: 0;
+            transform: translateY(28px) scale(0.985);
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+            backface-visibility: hidden;
+            -webkit-font-smoothing: subpixel-antialiased;
+        }
+
+        /* 2. Trạng thái xuất hiện: Nâng tầm vị trí và độ mờ 100% cực êm */
+        .reveal-item.is-revealed,
+        .reveal-single.is-revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* 3. Hiệu ứng Footer: Nội dung footer xuất hiện trước */
+        #footer-main-content {
+            opacity: 0;
+            transform: translateY(26px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        #footer-main-content.is-revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 4. Thanh cam kết nổi: Xuất hiện mượt mà từ TRÁI SANG PHẢI */
+        #footer-commitment-bar {
+            opacity: 0;
+            transform: translateX(-80px) scale(0.98);
+            transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        #footer-commitment-bar.is-revealed {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+
+        /* 4 mục con bên trong thanh cam kết lướt so le từ trái sang phải */
+        .commitment-item {
+            opacity: 0;
+            transform: translateX(-24px);
+            transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .commitment-item.is-revealed {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* 5. Tôn trọng chế độ accessibility (giảm chuyển động của hệ điều hành) */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal-item,
+            .reveal-single,
+            #footer-main-content,
+            #footer-commitment-bar,
+            .commitment-item {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const revealGroups = document.querySelectorAll('.reveal-group');
+            const singleReveals = document.querySelectorAll('.reveal-single');
+
+            // Fallback nếu trình duyệt cũ không hỗ trợ IntersectionObserver
+            if (!('IntersectionObserver' in window)) {
+                document.querySelectorAll('.reveal-item, .reveal-single').forEach(el => {
+                    el.classList.add('is-revealed');
+                });
+                const fMain = document.getElementById('footer-main-content');
+                const cBar = document.getElementById('footer-commitment-bar');
+                if (fMain) fMain.classList.add('is-revealed');
+                if (cBar) cBar.classList.add('is-revealed');
+                return;
+            }
+
+            // Kích hoạt khi phần tử chớm vào tầm nhìn (không cần tải lại trang, cuộn qua lại đều chạy)
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -40px 0px',
+                threshold: 0.08
+            };
+
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const target = entry.target;
+
+                    if (entry.isIntersecting) {
+                        // KHI CUỘN VÀO TẦM MẮT: Xuất hiện mượt mà
+                        if (target.classList.contains('reveal-group')) {
+                            const items = target.querySelectorAll('.reveal-item');
+                            items.forEach((item, index) => {
+                                const delay = (index % 4) * 85; // Hiệu ứng trễ so le sang trọng
+                                setTimeout(() => {
+                                    item.classList.add('is-revealed');
+                                }, delay);
+                            });
+                        } else if (target.classList.contains('reveal-single')) {
+                            target.classList.add('is-revealed');
+                        }
+                    } else {
+                        // KHI CUỘN RA NGOÀI TẦM MẮT: Reset lại trạng thái để lần cuộn tới tiếp theo lại lướt lên tiếp!
+                        if (target.classList.contains('reveal-group')) {
+                            const items = target.querySelectorAll('.reveal-item');
+                            items.forEach(item => {
+                                item.classList.remove('is-revealed');
+                            });
+                        } else if (target.classList.contains('reveal-single')) {
+                            target.classList.remove('is-revealed');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            revealGroups.forEach(group => revealObserver.observe(group));
+            singleReveals.forEach(single => revealObserver.observe(single));
+
+            // ===================================================================
+            // KỊCH BẢN FOOTER LẶP LẠI KHI CUỘN CHUỘT:
+            // 1. NỘI DUNG FOOTER HIỆN TRƯỚC
+            // 2. THANH CAM KẾT VIP LƯỚT TỪ TRÁI SANG PHẢI
+            // ===================================================================
+            const footerEl = document.querySelector('footer');
+            const footerMain = document.getElementById('footer-main-content');
+            const commitmentBar = document.getElementById('footer-commitment-bar');
+
+            if (footerEl && commitmentBar && footerMain) {
+                const commitmentItems = commitmentBar.querySelectorAll('.grid > div');
+                commitmentItems.forEach(item => item.classList.add('commitment-item'));
+
+                let footerTimer1 = null;
+                let footerTimer2 = [];
+
+                const footerObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // Cuộn tới Footer: Nội dung chính hiện trước
+                            footerMain.classList.add('is-revealed');
+
+                            // Sau 280ms: Thanh cam kết lướt từ trái sang phải
+                            footerTimer1 = setTimeout(() => {
+                                commitmentBar.classList.add('is-revealed');
+
+                                // 4 mục cam kết nối tiếp nhau xuất hiện từ trái sang phải
+                                commitmentItems.forEach((cItem, cIdx) => {
+                                    const t = setTimeout(() => {
+                                        cItem.classList.add('is-revealed');
+                                    }, 100 + cIdx * 90);
+                                    footerTimer2.push(t);
+                                });
+                            }, 280);
+                        } else {
+                            // Cuộn ngược lên rời khỏi Footer: Reset lại để lần sau cuộn xuống lại bay tiếp
+                            clearTimeout(footerTimer1);
+                            footerTimer2.forEach(t => clearTimeout(t));
+                            footerTimer2 = [];
+
+                            footerMain.classList.remove('is-revealed');
+                            commitmentBar.classList.remove('is-revealed');
+                            commitmentItems.forEach(cItem => cItem.classList.remove('is-revealed'));
+                        }
+                    });
+                }, {
+                    root: null,
+                    rootMargin: '0px 0px -40px 0px',
+                    threshold: 0.05
+                });
+
+                footerObserver.observe(footerEl);
+            }
+        });
+    </script>
+@endsection

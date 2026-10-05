@@ -1,0 +1,119 @@
+@extends('layouts.client')
+
+@section('title', 'Tin Tức & Sự Kiện - GiaDụngPro')
+
+@section('content')
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="text-left mb-8">
+            <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white">Tin Tức & Sự Kiện</h1>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Cập nhật tin tức mới nhất về sản phẩm, khuyến mãi và thông báo từ GiaDụngPro</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Sidebar Navigation Categories -->
+            <div class="col-span-1 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-3xl p-6 shadow-sm h-fit text-left">
+                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-4">Danh mục tin</h3>
+                <ul class="space-y-3 text-sm">
+                    <li>
+                        <a href="{{ route('news.index') }}" class="block py-1 hover:text-orange-500 {{ !request('category') && !request('type') ? 'text-orange-500 font-bold' : 'text-slate-600 dark:text-slate-400' }}">
+                            Tất cả tin bài
+                        </a>
+                    </li>
+                    @foreach($categories as $category)
+                        <li>
+                            <a href="{{ route('news.index', ['category' => $category->slug]) }}" class="block py-1 hover:text-orange-500 {{ request('category') === $category->slug ? 'text-orange-500 font-bold' : 'text-slate-600 dark:text-slate-400' }}">
+                                {{ $category->name }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+
+                <div class="border-t border-slate-100 dark:border-slate-700 my-4 pt-4"></div>
+                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-4">Nhóm tin bài</h3>
+                <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+                    <li>
+                        <a href="{{ route('news.index', ['type' => 'new_stock']) }}" class="block py-1 hover:text-orange-500 {{ request('type') === 'new_stock' ? 'text-orange-500 font-bold' : '' }}">
+                            📦 Sản phẩm vừa nhập kho
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('news.index', ['type' => 'new_release']) }}" class="block py-1 hover:text-orange-500 {{ request('type') === 'new_release' ? 'text-orange-500 font-bold' : '' }}">
+                            ✨ Sản phẩm mới ra mắt
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('news.index', ['type' => 'promotion']) }}" class="block py-1 hover:text-orange-500 {{ request('type') === 'promotion' ? 'text-orange-500 font-bold' : '' }}">
+                            🎉 Chương trình ưu đãi
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('news.index', ['type' => 'store_news']) }}" class="block py-1 hover:text-orange-500 {{ request('type') === 'store_news' ? 'text-orange-500 font-bold' : '' }}">
+                            🏢 Tin tức cửa hàng
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('news.index', ['type' => 'event']) }}" class="block py-1 hover:text-orange-500 {{ request('type') === 'event' ? 'text-orange-500 font-bold' : '' }}">
+                            🎡 Sự kiện trò chơi
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Articles List -->
+            <div class="col-span-1 lg:col-span-3 space-y-8">
+                @if($news->isEmpty())
+                    <div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-3xl p-12 text-center shadow-sm">
+                        <svg class="w-16 h-16 text-slate-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                        <h3 class="font-bold text-slate-800 dark:text-slate-200 text-lg mb-1">Không có bài viết</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Hiện tại chưa có bài viết nào được xuất bản trong mục này.</p>
+                    </div>
+                @else
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
+                        @foreach($news as $article)
+                            <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                                <div>
+                                    <!-- Image Thumbnail -->
+                                    <a href="{{ route('news.show', $article->slug) }}" class="block aspect-video bg-slate-50 overflow-hidden relative">
+                                        @if($article->thumbnail)
+                                            <img src="{{ $article->thumbnail_url }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
+                                        @else
+                                            <div class="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-700 text-slate-400">
+                                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                                            </div>
+                                        @endif
+                                        <span class="absolute bottom-3 left-3 bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
+                                            {{ $article->category ? $article->category->name : 'Tin tức' }}
+                                        </span>
+                                    </a>
+
+                                    <div class="p-5 space-y-2">
+                                        <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">
+                                            📅 {{ $article->published_at ? $article->published_at->format('d/m/Y') : $article->created_at->format('d/m/Y') }}
+                                        </span>
+                                        <h2 class="font-bold text-slate-800 dark:text-slate-200 text-sm hover:text-orange-500 transition-colors line-clamp-2">
+                                            <a href="{{ route('news.show', $article->slug) }}">{{ $article->title }}</a>
+                                        </h2>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-3 leading-relaxed">
+                                            {{ $article->summary }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="px-5 pb-5 pt-2 text-right">
+                                    <a href="{{ route('news.show', $article->slug) }}" class="text-xs font-bold text-orange-500 hover:text-orange-600 inline-flex items-center gap-1">
+                                        Đọc tiếp
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Paginate -->
+                    <div class="pt-6 border-t border-slate-100 dark:border-slate-700">
+                        {{ $news->links() }}
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+@endsection

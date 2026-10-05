@@ -1,0 +1,418 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/* Smooth Page Entrance Animation */
+@keyframes pageEntranceSmooth {
+    0% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.985);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.page-entrance-smooth {
+    animation: pageEntranceSmooth 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+:root {
+  /* Design Tokens for Light Mode */
+  --bg-main: #F6F8FB;              /* Light background phụ */
+  --bg-card: #FFFFFF;              /* Pure white card in light mode */
+  --bg-header: #FFFFFF;            /* White header in light mode */
+  --border-main: #E2E8F0;          /* Slate-200 border */
+  --text-main: #020202;            /* Onyx main text in light mode */
+  --text-sub: #4D535E;             /* Slate-600 */
+  --bg-accent-light: #E6F2F7;      /* Candy Blue light shade */
+  --bg-hero-end: #CBE3F0;          /* Soft Candy Blue transition for Light Mode */
+  --hero-from: #020202;            /* Onyx */
+  --hero-via: #142A37;             /* Dark Onyx/Blue blend */
+  --hero-to: #B2D5E5;              /* Candy Blue */
+  --footer-bg: #020202;            /* Onyx background for Light Mode */
+  --footer-text: #B7BDC7;          /* Light grey text for Light Mode footer */
+  --footer-heading: #FFFFFF;       /* White heading for Light Mode footer */
+  --footer-border: #23262B;        /* Dark border for Light Mode footer */
+}
+
+.dark {
+  /* Design Tokens for Dark Mode */
+  --bg-main: #020202;              /* Onyx background */
+  --bg-card: #121315;              /* Dark card background */
+  --bg-header: #0A0A0A;            /* Dark header background */
+  --border-main: #23262B;          /* Onyx border */
+  --text-main: #FFFFFF;            /* White text in dark mode */
+  --text-sub: #B7BDC7;             /* Onyx text sub */
+  --bg-accent-light: #142A37;      /* Candy Blue dark shade */
+  --bg-hero-end: #020202;          /* Onyx main bg for Dark Mode */
+  --hero-from: #B2D5E5;            /* Candy Blue */
+  --hero-via: #142A37;             /* Dark Onyx/Blue blend */
+  --hero-to: #020202;              /* Onyx */
+  --footer-bg: #B2D5E5;            /* Candy Blue background for Dark Mode */
+  --footer-text: #020202;          /* Onyx text for Dark Mode footer */
+  --footer-heading: #020202;       /* Onyx heading for Dark Mode footer */
+  --footer-border: #97C3D7;        /* Medium Candy Blue border for Dark Mode footer */
+}
+
+@theme {
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Custom Color Palettes */
+    --color-onyx: #020202;
+    --color-candy-blue: #B2D5E5;
+    --color-candy-blue-hover: #97C3D7;
+
+    /* Primary - Candy Blue overrides for orange */
+    --color-orange-50: #F2F9FC;
+    --color-orange-100: #E6F2F7;       /* Lighter shade of Candy Blue */
+    --color-orange-200: #D0E7F2;
+    --color-orange-300: #BADCEE;
+    --color-orange-400: #B2D5E5;       /* Candy Blue Main */
+    --color-orange-500: #B2D5E5;       /* Candy Blue Main */
+    --color-orange-600: #97C3D7;       /* Hover */
+    --color-orange-700: #7CB1CA;       /* Active */
+    --color-orange-800: #5E9FC0;
+    --color-orange-900: #3E82A5;
+    --color-orange-950: var(--bg-hero-end);
+
+    /* Secondary - Onyx and Neutral overrides mapped to CSS Variables */
+    --color-slate-50: var(--bg-main);
+    --color-slate-100: var(--bg-main);
+    --color-slate-200: var(--border-main);
+    --color-slate-300: var(--text-sub);
+    --color-slate-400: var(--text-sub);
+    --color-slate-500: var(--text-sub);
+    --color-slate-600: var(--text-sub);
+    --color-slate-700: var(--border-main);
+    --color-slate-800: var(--bg-card);
+    --color-slate-900: var(--bg-main);
+    --color-slate-950: var(--bg-header);
+
+    /* Overrides for amber to avoid yellow/orange mixtures */
+    --color-amber-300: #BADCEE;
+    --color-amber-400: #B2D5E5;
+    --color-amber-500: #97C3D7;
+    --color-amber-600: #7CB1CA;
+    --color-amber-700: #7CB1CA;
+
+    /* Overrides for blue to follow Candy Blue shades */
+    --color-blue-50: var(--bg-accent-light);
+    --color-blue-100: var(--bg-accent-light);
+    --color-blue-600: #B2D5E5;
+    --color-blue-700: #97C3D7;
+
+    /* Transition defaults */
+    --default-transition-duration: 0.3s;
+    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ensure body respects global variables */
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Text contrast mapping on client side and admin side */
+.text-slate-800,
+.text-slate-900,
+.group:hover .group-hover\:text-slate-800,
+.group:hover .group-hover\:text-slate-900,
+.hover\:text-slate-800:hover,
+.hover\:text-slate-900:hover {
+  color: var(--text-main) !important;
+}
+.text-slate-700,
+.text-slate-600,
+.text-slate-500,
+.group:hover .group-hover\:text-slate-700,
+.group:hover .group-hover\:text-slate-600,
+.hover\:text-slate-700:hover,
+.hover\:text-slate-600:hover {
+  color: var(--text-sub) !important;
+}
+.border-slate-100, 
+.border-slate-200, 
+.border-slate-150 {
+  border-color: var(--border-main) !important;
+}
+
+/* Candy Blue Contrast Rule: Any primary buttons (bg-orange-500) must have Onyx text */
+.bg-orange-500,
+[class*="bg-orange-500"],
+[class*="from-orange-500"] {
+  color: #020202 !important; /* Ensure Onyx text on Candy Blue */
+}
+
+/* Force dark styling overrides on standard elements when .dark is active */
+.dark .bg-white {
+  background-color: var(--bg-card) !important; /* Onyx Card */
+}
+.dark .bg-white\/80 {
+  background-color: rgba(10, 10, 10, 0.8) !important; /* Onyx Header/Footer with opacity */
+}
+
+/* Custom styles for tables */
+table thead tr {
+  background-color: var(--bg-header) !important;
+}
+table thead th {
+  color: var(--text-main) !important;
+}
+table tbody tr:nth-child(even) {
+  background-color: rgba(178, 213, 229, 0.03) !important; /* Subtle Candy Blue tint */
+}
+.dark table tbody tr:nth-child(even) {
+  background-color: rgba(35, 38, 43, 0.4) !important;
+}
+table tbody tr:hover {
+  background-color: rgba(178, 213, 229, 0.1) !important;
+}
+
+/* Custom styles for forms */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+select,
+textarea {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border-main) !important;
+  border-radius: 12px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+select:focus,
+textarea:focus {
+  outline: none !important;
+  border-color: var(--color-orange-500) !important; /* Candy Blue focus */
+  box-shadow: 0 0 0 2px rgba(178, 213, 229, 0.3) !important;
+  background-color: var(--bg-main) !important;
+}
+::placeholder {
+  color: var(--text-sub) !important;
+  opacity: 0.6 !important;
+}
+
+/* Checkbox, radio, and range input accent color */
+input[type="checkbox"],
+input[type="radio"],
+input[type="range"] {
+  accent-color: var(--color-orange-500) !important; /* Candy Blue */
+}
+
+/* Hover effects for buttons */
+button, 
+.btn, 
+a.btn-primary, 
+a[class*="bg-orange-"], 
+a[class*="from-orange-"], 
+button[type="submit"] {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+button:hover, 
+.btn:hover, 
+a[class*="bg-orange-"]:hover, 
+a[class*="from-orange-"]:hover, 
+button[type="submit"]:hover {
+  transform: scale(1.02) !important;
+  box-shadow: 0 0 12px rgba(178, 213, 229, 0.35) !important;
+}
+
+/* Auth Specific Input Overrides to Bypass Global Forms CSS */
+#auth-container input[type="text"],
+#auth-container input[type="email"],
+#auth-container input[type="password"],
+#auth-container input[type="number"],
+#auth-container select,
+#auth-container textarea {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0px !important;
+    box-shadow: none !important;
+    padding-left: 0px !important;
+    padding-right: 32px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+#auth-container input.auth-input-line-dark {
+    border-bottom: 2px solid rgba(2, 2, 2, 0.2) !important;
+    color: #020202 !important;
+}
+#auth-container input.auth-input-line-dark:focus {
+    border-color: #020202 !important;
+}
+#auth-container input.auth-input-line-dark::placeholder {
+    color: rgba(2, 2, 2, 0.4) !important;
+}
+
+#auth-container input.auth-input-line-light {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+    color: #FFFFFF !important;
+}
+#auth-container input.auth-input-line-light:focus {
+    border-color: #B2D5E5 !important;
+}
+#auth-container input.auth-input-line-light::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Static Clip Path classes with transition */
+#overlay-bg {
+    transition: clip-path 0.5s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+.clip-signin-static {
+    clip-path: polygon(35% 0%, 100% 0%, 100% 100%, 65% 100%) !important;
+}
+.clip-signup-static {
+    clip-path: polygon(65% 0%, 100% 0%, 100% 100%, 35% 100%) !important;
+}
+.morph-sweep {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%) !important;
+}
+
+/* Metallic Pure Glossy Onyx Text Effect for Light Mode (No Blue) */
+.metallic-gradient-text {
+    background: linear-gradient(135deg, #090D16 0%, #1E293B 25%, #64748B 50%, #0F172A 75%, #334155 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    color: transparent !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: -0.025em !important;
+}
+
+/* Metallic Light/Candy Blue 3-Color Gradient Text Effect for Dark Mode */
+.dark .metallic-dark-text {
+    background: linear-gradient(to right, #FFFFFF 0%, #CFFAFE 50%, #38BDF8 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    color: transparent !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: -0.025em !important;
+}
+
+/* Explicit Candy Blue text class for Dark Mode */
+.dark .text-candy-blue,
+.dark .dark\:text-candy-blue {
+    color: #38BDF8 !important;
+}
+
+/* ========================================================
+   Admin Sidebar Navigation & Contrast Fixes
+   ======================================================== */
+.admin-nav-link {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    padding: 0.625rem 1rem !important;
+    border-radius: 0.75rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: #4D535E !important;
+    background-color: transparent !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    text-decoration: none !important;
+    transform: none !important;
+}
+
+.admin-nav-link svg {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+    flex-shrink: 0 !important;
+    stroke: currentColor !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.admin-nav-link:hover {
+    background-color: #FFFFFF !important;
+    color: #020202 !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.04) !important;
+    transform: none !important;
+}
+
+.admin-nav-link:hover svg {
+    stroke: #020202 !important;
+}
+
+.admin-nav-link.active {
+    background-color: var(--color-orange-500) !important;
+    color: #020202 !important;
+    font-weight: 600 !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06) !important;
+    transform: none !important;
+}
+
+.admin-nav-link.active svg {
+    stroke: #020202 !important;
+}
+
+.admin-nav-link.active:hover {
+    background-color: var(--color-orange-600) !important;
+    color: #020202 !important;
+    transform: none !important;
+}
+
+.admin-nav-link.active:hover svg {
+    stroke: #020202 !important;
+}
+
+/* Dark mode adjustments for admin navigation */
+.dark .admin-nav-link {
+    color: #94A3B8 !important;
+}
+
+.dark .admin-nav-link:hover {
+    background-color: #1E293B !important;
+    color: #FFFFFF !important;
+}
+
+.dark .admin-nav-link:hover svg {
+    stroke: #FFFFFF !important;
+}
+
+.dark .admin-nav-link.active {
+    background-color: var(--color-orange-500) !important;
+    color: #020202 !important;
+}
+
+.dark .admin-nav-link.active svg {
+    stroke: #020202 !important;
+}
+
+/* Fix dark action buttons in admin to ensure high contrast */
+button.bg-slate-900,
+a.bg-slate-900,
+[class*="bg-slate-900"].text-white {
+    background-color: #0F172A !important;
+    color: #FFFFFF !important;
+}
+button.bg-slate-900:hover,
+a.bg-slate-900:hover,
+[class*="bg-slate-900"].text-white:hover {
+    background-color: #1E293B !important;
+    color: #FFFFFF !important;
+}
